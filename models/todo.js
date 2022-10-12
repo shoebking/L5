@@ -1,6 +1,5 @@
-// models/todo.js
 "use strict";
-const { Model,Op } = require("sequelize");
+const { Model, Op } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
     /**
@@ -15,27 +14,30 @@ module.exports = (sequelize, DataTypes) => {
       console.log("My Todo list \n");
 
       console.log("Overdue");
-      // FILL IN HERE
-      console.log((await Todo.overdue()).map((todo) => {
+      console.log(
+        (await Todo.overdue())
+          .map((todo) => {
             return todo.displayableString();
-          }).join("\n")
+          })
+          .join("\n")
       );
       console.log("\n");
 
       console.log("Due Today");
       // FILL IN HERE
-      console.log((await Todo.dueToday()).map((todo) => {
-        return todo.displayableString();
-      }).join("\n")
-  );
+      console.log(
+        (await Todo.dueToday())
+          .map((todo) => todo.displayableString())
+          .join("\n")
+      );
       console.log("\n");
 
       console.log("Due Later");
-      // FILL IN HERE
-      console.log((await Todo.dueLater()).map((todo) => {
-        return todo.displayableString();
-      }).join("\n")
-  );
+      console.log(
+        (await Todo.dueLater())
+          .map((todo) => todo.displayableString())
+          .join("\n")
+      );
     }
 
     static async overdue() {
@@ -79,7 +81,11 @@ module.exports = (sequelize, DataTypes) => {
 
     displayableString() {
       let checkbox = this.completed ? "[x]" : "[ ]";
-      return `${this.id}. ${checkbox} ${this.title} ${this.dueDate}`;
+      return `${this.id}. ${checkbox} ${this.title} ${
+        this.dueDate == new Date().toLocaleDateString("en-CA")
+          ? ""
+          : this.dueDate
+      }`.trim();
     }
   }
   Todo.init(
